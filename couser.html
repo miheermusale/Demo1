@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha
+    384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>course page</title>
+</head>
+<body>
+  <header>
+    <ul class="nav nav-pills ">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+      </ul>
+  </header>
+  <main>
+    <div class="container mt-5">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Chapter Name" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button id="add_btn" class="btn btn-outline-success" type="button" id="button-addon2">Add</button>
+      </div>
+      
+      <ul id="parentList" class="list-group">
+        <li class="list-group-item d-flex justify-content-between">
+            <h3 class="flex-grow-1">Chapter 1</h3>
+            <button class="btn btn-warning mx-3" onClick="editChapter(this)">Edit</button>
+            <button class="btn btn-danger" onClick="removeChapter(this)">Remove</button>
+        </li>
+      </ul>
+      </div>
+  </main>
+  <script>
+    let addbtn = document.getElementById("add_btn")
+    addbtn.addEventListener('click',addchapter)
+    function addchapter(e){
+        let currentBtn = e.currentTarget;
+        let currentInput = currentBtn.previousElementSibling
+        let currentChapterName = currentInput.value
+
+        let newLi = document.createElement('li')
+        newLi.classList.add("list-group-item")
+        newLi.innerHTML = `<h3 class="flex-grow-1">${currentChapterName}</h3>
+            <button class="btn btn-warning mx-3">Edit</button>
+            <button class="btn btn-danger" onClick="removeChapter(this)">Remove</button>`
+        let parentList = document.getElementById('parentList')
+        parentList.appendChild(newLi)
+    }                 
+    function removeChapter(currElement){
+      currElement.parentElement.remove()
+      let parentList = document.getElementById('parentList');
+      if (parentList.children.length <=0) {
+        let newEmptyMsg = document.createElement("h3")
+        newEmptyMsg.classList.add("emptyMsg")
+        newEmptyMsg.textContent = "Nothing is here. Please Add a chapter!!"
+        parentList.appendChild(newEmptyMsg)
+      }
+    }
+    function editChapter(currElement){
+      if(currElement.textContent == "Done"){
+        currElement.textContent ="Edit"
+        let currentChapterName = currElement.previousElementSibling.value
+        let currHeading = document.createElement('h3');
+        currHeading.className = "flex-grow-1"
+        currHeading.textContent = currentChapterName
+        currElement.parentElement.replaceChild(currHeading, currElement.previousElementSibling)
+      }else{}
+      currElement.textContent = "Done"
+      let currentChapterName = currElement.previousElementSibling.textContent
+      let currInput = document.createElement('input');
+      currInput.type="text"
+      currInput.placeholder = "Chapter Name"
+      currInput.className = "form-control"
+      currInput.value = currentChapterName
+      currElement.parentElement.replaceChild(currInput,currElement.previousElementSibling)
+    }
+  </script> 
+</body>
+</html>
+
